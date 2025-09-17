@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quick_pos/presentation/widgets/orderScreen/order_customization_selection.dart';
 
 class MobileOrderScreen extends StatefulWidget {
   const MobileOrderScreen({super.key});
@@ -15,163 +16,136 @@ class _MobileOrderScreenState extends State<MobileOrderScreen> {
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          Container(height: 275, decoration: BoxDecoration(color: Colors.blue)),
+          Stack(
+            children: [
+              Container(
+                height: 275,
+                width: 410,
+                //temporary value as it needs to be adjusted for different screen sizes
+                decoration: BoxDecoration(color: Colors.blue),
+                child: Image.asset("", height: 275, fit: BoxFit.cover),
+              ),
+              Positioned(
+                top: 40,
+                left: 10,
+                child: InkWell(
+                  onTap: () => (),
+                  borderRadius: BorderRadius.circular(30),
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withAlpha(200),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.arrow_back,
+                      size: 24,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
           SizedBox(height: 13),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Product title",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Product title",
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "Contains: Milk, Soy",
+                      style: TextStyle(fontSize: 14, color: Colors.orange[700]),
+                    ),
+                  ],
                 ),
                 Column(children: [Text("100"), Text('Base price')]),
               ],
             ),
           ),
+
           SizedBox(height: 10),
           Divider(),
-          Text(
-            "Cup Size",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-          ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ChoiceChip(
-                label: Text('Regular', style: TextStyle(fontSize: 18)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              ChoiceChip(
-                label: Text('Medium', style: TextStyle(fontSize: 18)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              ChoiceChip(
-                label: Text('Large', style: TextStyle(fontSize: 18)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-            ],
+          OrderCustomizationSelection(
+            title: 'Cup Size',
+            options: ["Regular", "Medium", "Large"],
+            defaultIndex: 0,
           ),
           SizedBox(height: 8),
-          Text(
-            "Ice Level",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-          ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ChoiceChip(
-                label: Text('Less Ice', style: TextStyle(fontSize: 18)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              ChoiceChip(
-                label: Text('Regular', style: TextStyle(fontSize: 18)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              ChoiceChip(
-                label: Text('More Ice', style: TextStyle(fontSize: 18)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-            ],
+          OrderCustomizationSelection(
+            title: 'Ice Level',
+            options: ["Less Ice", "Regular", "Extra Ice"],
+            defaultIndex: 1,
           ),
           SizedBox(height: 8),
-          Text(
-            "Sugar Level",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-          ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ChoiceChip(
-                label: Text('0%', style: TextStyle(fontSize: 16)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              ChoiceChip(
-                label: Text('25%', style: TextStyle(fontSize: 16)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              ChoiceChip(
-                label: Text('50%', style: TextStyle(fontSize: 16)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              ChoiceChip(
-                label: Text('75%', style: TextStyle(fontSize: 16)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              ChoiceChip(
-                label: Text('100%', style: TextStyle(fontSize: 16)),
-                selected: false,
-                padding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-            ],
+          OrderCustomizationSelection(
+            title: 'Sugar Level',
+            options: ["0%", "25%", "50%", "75%", "100%"],
+            defaultIndex: 2,
           ),
           SizedBox(height: 8),
-          Text(
-            "Notes:",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-          ),
-          SizedBox(height: 8),
-          TextField(
-            cursorColor: Colors.blueAccent,
-            maxLines: 5,
-            decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 1.5),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue, width: 2),
-              ),
-              border: OutlineInputBorder(),
-              labelText: 'Enter your notes',
-              alignLabelWithHint: true,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Notes:",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                ),
+                SizedBox(height: 8),
+                TextField(
+                  cursorColor: Colors.blueAccent,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter your notes',
+                    labelStyle: TextStyle(
+                      color: Colors.black
+                    ),
+                    alignLabelWithHint: true,
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity, // full width
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // your POS theme color
-                padding: EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 2,
-              ),
-              onPressed: () {
 
-              },
-              child: Text(
-                "Add to Order",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+          SizedBox(height: 10),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 2,
+                ),
+                onPressed: () {},
+                child: Text(
+                  "Add to Order",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
