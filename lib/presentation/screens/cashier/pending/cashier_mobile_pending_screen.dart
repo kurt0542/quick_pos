@@ -10,7 +10,8 @@ class CashierMobilePendingScreen extends StatefulWidget {
       _CashierMobilePendingScreenState();
 }
 
-class _CashierMobilePendingScreenState extends State<CashierMobilePendingScreen> {
+class _CashierMobilePendingScreenState
+    extends State<CashierMobilePendingScreen> {
   List<Map<String, dynamic>> pendingOrders = [
     {
       "orderId": "ORD-1001",
@@ -35,13 +36,21 @@ class _CashierMobilePendingScreenState extends State<CashierMobilePendingScreen>
     },
   ];
 
-  void markOrderComplete(int index) {
+  void _removeOrder(int index, {required bool completed}) {
     final order = pendingOrders[index];
     setState(() {
       pendingOrders.removeAt(index);
     });
+
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Order ${order['orderId']} marked complete")),
+      SnackBar(
+        content: Text(
+          completed
+              ? "Order ${order['orderId']} marked complete"
+              : "Order ${order['orderId']} cancelled",
+        ),
+        backgroundColor: completed ? Colors.green : Colors.red,
+      ),
     );
   }
 
@@ -79,7 +88,8 @@ class _CashierMobilePendingScreenState extends State<CashierMobilePendingScreen>
           final order = pendingOrders[index];
           return PendingOrderCard(
             order: order,
-            onComplete: () => markOrderComplete(index),
+            onComplete: () => _removeOrder(index, completed: true),
+            onCancel: () => _removeOrder(index, completed: false),
           );
         },
       ),

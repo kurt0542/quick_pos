@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'order_details_dialog.dart';
+
 class PendingOrderCard extends StatelessWidget {
   final Map<String, dynamic> order;
   final VoidCallback onComplete;
+  final VoidCallback onCancel;
 
   const PendingOrderCard({
     super.key,
     required this.order,
     required this.onComplete,
+    required this.onCancel,
   });
 
   @override
@@ -54,18 +58,14 @@ class PendingOrderCard extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 6),
-
             Text(
               "Customer: ${order['customer']}",
               style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey[700]),
             ),
-
             const SizedBox(height: 12),
-
             Text(
-              "Items:",
+              "Ordered Items:",
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
@@ -86,11 +86,9 @@ class PendingOrderCard extends StatelessWidget {
                   )
                   .toList(),
             ),
-
             const SizedBox(height: 12),
             Divider(color: Colors.grey[300]),
             const SizedBox(height: 8),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -111,19 +109,18 @@ class PendingOrderCard extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 12),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton.icon(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          "Viewing details for ${order['orderId']}",
-                        ),
+                    showDialog(
+                      context: context,
+                      builder: (context) => OrderDetailsDialog(
+                        order: order,
+                        onCancel: onCancel,
+                        onComplete: onComplete,
                       ),
                     );
                   },
