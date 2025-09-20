@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quick_pos/presentation/screens/cashier/orders/cashier_mobile_order_screen.dart';
 import 'package:quick_pos/presentation/screens/cashier/pending/cashier_mobile_pending_screen.dart';
+import 'package:quick_pos/presentation/screens/cashier/transactions/cashier_mobile_transaction_screen.dart';
 
 class CashierMobileNavigation extends StatefulWidget {
   const CashierMobileNavigation({super.key});
@@ -15,8 +16,7 @@ class _CashierMobileNavigationState extends State<CashierMobileNavigation> {
   final List<Widget> _screens = [
     Center(child: CashierMobileOrderScreen()),
     Center(child: CashierMobilePendingScreen()),
-    Center(child: Text("Payments Screen")),
-    Center(child: Text("Reports Screen")),
+    Center(child: CashierMobileTransactionScreen()),
     Center(child: Text("Settings Screen")),
   ];
 
