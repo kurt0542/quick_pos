@@ -4,7 +4,12 @@ import '../../../widgets/mini_pending_order_card.dart';
 import 'transaction_card.dart';
 
 class CashierMobileTransactionScreen extends StatefulWidget {
-  const CashierMobileTransactionScreen({super.key});
+  final VoidCallback? onSeeAllPending;
+
+  const CashierMobileTransactionScreen({
+    super.key,
+    this.onSeeAllPending,
+  });
 
   @override
   State<CashierMobileTransactionScreen> createState() =>
@@ -59,7 +64,7 @@ class _CashierMobileTransactionScreenState
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: widget.onSeeAllPending, // 👈 Use callback
                         child: Text(
                           "See All",
                           style: TextStyle(

@@ -7,18 +7,12 @@ class CashierMobileNavigation extends StatefulWidget {
   const CashierMobileNavigation({super.key});
 
   @override
-  State<CashierMobileNavigation> createState() => _CashierMobileNavigationState();
+  State<CashierMobileNavigation> createState() =>
+      _CashierMobileNavigationState();
 }
 
 class _CashierMobileNavigationState extends State<CashierMobileNavigation> {
   int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    Center(child: CashierMobileOrderScreen()),
-    Center(child: CashierMobilePendingScreen()),
-    Center(child: CashierMobileTransactionScreen()),
-    Center(child: Text("Settings Screen")),
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -28,9 +22,21 @@ class _CashierMobileNavigationState extends State<CashierMobileNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> screens = [
+      const Center(child: CashierMobileOrderScreen()),
+      const Center(child: CashierMobilePendingScreen()),
+      Center(
+        child: CashierMobileTransactionScreen(
+          onSeeAllPending: () => _onItemTapped(1),
+        ),
+      ),
+      const Center(child: Text("Settings Screen")),
+    ];
+
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blueGrey[50],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
