@@ -1,97 +1,134 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quick_pos/data/service/auth_service.dart';
 
 import '../../widgets/form_field.dart';
-class MobileLoginScreen extends StatelessWidget {
+import '../cashier/cashier_mobile_navigation.dart';
+
+class MobileLoginScreen extends StatefulWidget {
   const MobileLoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<MobileLoginScreen> createState() => _MobileLoginScreenState();
+}
 
-    TextEditingController usernameController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+class _MobileLoginScreenState extends State<MobileLoginScreen> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-    _login() {
-      String username = usernameController.text;
-      String password = passwordController.text;
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void _login() async {
+    String username = usernameController.text.trim();
+    String password = passwordController.text.trim();
+
+    try {
+      await AuthService().login(username, password);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const CashierMobileNavigation()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 30),
-                Image.asset(
-                  'assets/images/login_logo_500x500.png',
-                  fit: BoxFit.contain,
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'quickPOS',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[700],
-                  ),
-                ),
-                SizedBox(height: 40),
-                FormTextField(
-                  isPasswordField: false,
-                  fieldLabelText: 'username',
-                  controller: usernameController,
-                ),
-                SizedBox(height: 15),
-                FormTextField(
-                  isPasswordField: true,
-                  fieldLabelText: 'password',
-                  controller: passwordController,
-                ),
-                SizedBox(height: 16),
-                Material(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20),
-                  elevation: 4,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: () {
-                      _login();
-                    },
-                    child: Padding(
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 40, vertical: 14),
-                      child: Center(
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 20 + keyboardHeight),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 30),
+                      Image.asset(
+                        'assets/images/login_logo_500x500.png',
+                        fit: BoxFit.contain,
+                        height: 120,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'quickPOS',
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[700],
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      FormTextField(
+                        isPasswordField: false,
+                        fieldLabelText: 'Username',
+                        controller: usernameController,
+                      ),
+                      const SizedBox(height: 15),
+                      FormTextField(
+                        isPasswordField: true,
+                        fieldLabelText: 'Password',
+                        controller: passwordController,
+                      ),
+                      const SizedBox(height: 20),
+                      Material(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(20),
+                        elevation: 4,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: _login,
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 40,
+                              vertical: 14,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                      const Spacer(),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          "v1.0.0",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: Text(
-              "v1.0.0",
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
               ),
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }

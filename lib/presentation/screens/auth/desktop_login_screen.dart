@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../data/service/auth_service.dart';
 import '../../widgets/form_field.dart';
+import '../cashier/cashier_mobile_navigation.dart';
 
 class DesktopLoginScreen extends StatefulWidget {
   const DesktopLoginScreen({super.key});
@@ -15,7 +17,23 @@ class _DesktopLoginScreenState extends State<DesktopLoginScreen> {
   bool _hovering = false;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  _login() async {
+    String username = usernameController.text;
+    String password = passwordController.text;
 
+    try {
+      await AuthService().login(username, password);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const CashierMobileNavigation()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +139,9 @@ class _DesktopLoginScreenState extends State<DesktopLoginScreen> {
                           elevation: 4,
                           child: InkWell(
                             borderRadius: BorderRadius.circular(20),
-                            onTap: () {},
+                            onTap: () {
+                              _login();
+                            },
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 40,

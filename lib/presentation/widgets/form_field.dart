@@ -58,6 +58,7 @@ class _FormTextFieldState extends State<FormTextField> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextField(
+        controller: widget.controller,
         cursorColor: Colors.blueAccent,
         obscureText: widget.isPasswordField ? _isObscured : false,
         focusNode: _focusNode,
