@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quick_pos/presentation/screens/cashier/orders/cashier_mobile_order_screen.dart';
 import 'package:quick_pos/presentation/screens/cashier/pending/cashier_mobile_pending_screen.dart';
+import 'package:quick_pos/presentation/screens/cashier/settings/cashier_mobile_settings_screen.dart';
 import 'package:quick_pos/presentation/screens/cashier/transactions/cashier_mobile_transaction_screen.dart';
 
 class CashierMobileNavigation extends StatefulWidget {
@@ -30,7 +31,7 @@ class _CashierMobileNavigationState extends State<CashierMobileNavigation> {
           onSeeAllPending: () => _onItemTapped(1),
         ),
       ),
-      const Center(child: Text("Settings Screen")),
+      const Center(child: CashierMobileSettingsScreen()),
     ];
 
     return Scaffold(
