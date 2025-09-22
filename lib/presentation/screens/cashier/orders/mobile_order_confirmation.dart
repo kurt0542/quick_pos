@@ -14,7 +14,6 @@ class MobileOrderConfirmation extends StatefulWidget {
 }
 
 class _MobileOrderConfirmationState extends State<MobileOrderConfirmation> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,10 +52,10 @@ class _MobileOrderConfirmationState extends State<MobileOrderConfirmation> {
               ],
             ),
           ),
-          ToggleButton(),
+          ToggleButton(leftLabel: 'Dine In', rightLabel: 'Take Away'),
           CustomerInformation(),
-          SizedBox(height: 350,child: OrderList()),
-          OrderSummary(subtotal: 0, tax: 0, discount: 0,)
+          SizedBox(height: 350, child: OrderList()),
+          OrderSummary(subtotal: 0, tax: 0, discount: 0),
         ],
       ),
     );

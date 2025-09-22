@@ -2,14 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ToggleButton extends StatefulWidget {
-  const ToggleButton({super.key});
+  final String leftLabel;
+  final String rightLabel;
+  final Function(bool)? onToggle;
+
+  const ToggleButton({
+    super.key,
+    required this.leftLabel,
+    required this.rightLabel,
+    this.onToggle,
+  });
 
   @override
   State<ToggleButton> createState() => _ToggleButtonState();
 }
 
 class _ToggleButtonState extends State<ToggleButton> {
-  bool isDineIn = true;
+  bool isLeftSelected = true;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +36,8 @@ class _ToggleButtonState extends State<ToggleButton> {
           AnimatedAlign(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            alignment: isDineIn ? Alignment.centerLeft : Alignment.centerRight,
+            alignment:
+            isLeftSelected ? Alignment.centerLeft : Alignment.centerRight,
             child: Container(
               width: toggleWidth,
               margin: const EdgeInsets.all(4),
@@ -43,20 +53,24 @@ class _ToggleButtonState extends State<ToggleButton> {
               ),
             ),
           ),
-
           Row(
             children: [
               Expanded(
                 child: InkWell(
                   borderRadius: BorderRadius.circular(30),
-                  onTap: () => setState(() => isDineIn = true),
+                  onTap: () {
+                    setState(() => isLeftSelected = true);
+                    if (widget.onToggle != null) widget.onToggle!(true);
+                  },
                   child: Center(
                     child: Text(
-                      "Dine In",
+                      widget.leftLabel,
                       style: GoogleFonts.roboto(
-                        fontWeight: isDineIn ? FontWeight.bold : FontWeight.w400,
+                        fontWeight: isLeftSelected
+                            ? FontWeight.bold
+                            : FontWeight.w400,
                         fontSize: 16,
-                        color: isDineIn ? Colors.blue[800] : Colors.black87,
+                        color: isLeftSelected ? Colors.blue[800] : Colors.black87,
                       ),
                     ),
                   ),
@@ -65,14 +79,19 @@ class _ToggleButtonState extends State<ToggleButton> {
               Expanded(
                 child: InkWell(
                   borderRadius: BorderRadius.circular(30),
-                  onTap: () => setState(() => isDineIn = false),
+                  onTap: () {
+                    setState(() => isLeftSelected = false);
+                    if (widget.onToggle != null) widget.onToggle!(false);
+                  },
                   child: Center(
                     child: Text(
-                      "Take Away",
+                      widget.rightLabel,
                       style: GoogleFonts.roboto(
-                        fontWeight: !isDineIn ? FontWeight.bold : FontWeight.w400,
+                        fontWeight: !isLeftSelected
+                            ? FontWeight.bold
+                            : FontWeight.w400,
                         fontSize: 16,
-                        color: !isDineIn ? Colors.blue[800] : Colors.black87,
+                        color: !isLeftSelected ? Colors.blue[800] : Colors.black87,
                       ),
                     ),
                   ),
