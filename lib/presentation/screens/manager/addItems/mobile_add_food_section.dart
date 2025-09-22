@@ -1,7 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:quick_pos/presentation/widgets/manager/add_product_image.dart';
 import 'package:quick_pos/presentation/widgets/primary_button.dart';
 
 class MobileAddFoodSection extends StatefulWidget {
@@ -16,21 +14,6 @@ class _MobileAddFoodSectionState extends State<MobileAddFoodSection> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _allergensController = TextEditingController();
-
-  File? _imageFile;
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 70,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +74,7 @@ class _MobileAddFoodSectionState extends State<MobileAddFoodSection> {
               controller: _allergensController,
               cursorColor: Colors.blueAccent,
               decoration: InputDecoration(
-                labelText: "Possible Allergens",
+                labelText: "Possible Allergens (optional)",
                 labelStyle: TextStyle(color: Colors.black),
                 enabledBorder: OutlineInputBorder(
                 ),
@@ -101,33 +84,9 @@ class _MobileAddFoodSectionState extends State<MobileAddFoodSection> {
               ),
             ),
             const SizedBox(height: 16),
-
-            GestureDetector(
-              onTap: _pickImage,
-              child: _imageFile == null
-                  ? Container(
-                      height: 150,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Center(
-                        child: Text("Tap to select an image"),
-                      ),
-                    )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        _imageFile!,
-                        height: 150,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-            ),
+            AddProductImage(),
             const SizedBox(height: 24),
-            PrimaryButton(text: 'Add as Food', onPressed: () {}),
+            PrimaryButton(text: 'Add Food', onPressed: () {}),
           ],
         ),
       ),

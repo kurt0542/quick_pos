@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quick_pos/presentation/screens/manager/addItems/mobile_add_drink_section.dart';
 import 'package:quick_pos/presentation/screens/manager/addItems/mobile_add_food_section.dart';
 import 'package:quick_pos/presentation/widgets/toggle_button.dart';
 
@@ -11,6 +12,8 @@ class MobileAddMenuItemScreen extends StatefulWidget {
 }
 
 class _MobileAddMenuItemScreenState extends State<MobileAddMenuItemScreen> {
+  bool showFood = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,18 +28,25 @@ class _MobileAddMenuItemScreenState extends State<MobileAddMenuItemScreen> {
         ),
         title: Text(
           "Add Product",
-          style: TextStyle(
-            color: Colors.grey[50],
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.grey[50], fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            ToggleButton(leftLabel: 'Food', rightLabel: 'Beverage'),
+            ToggleButton(
+              leftLabel: 'Food',
+              rightLabel: 'Beverage',
+              onToggle: (isLeftSelected) {
+                setState(() {
+                  showFood = isLeftSelected;
+                });
+              },
+            ),
             Expanded(
-              child: MobileAddFoodSection(),
+              child: showFood
+                  ? MobileAddFoodSection()
+                  : MobileAddDrinkSection(),
             ),
           ],
         ),
