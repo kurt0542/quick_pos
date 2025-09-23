@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quick_pos/presentation/screens/manager/settings/manager_mobile_settings_screen.dart';
 
 class ManagerMobileNavigation extends StatefulWidget {
   const ManagerMobileNavigation({super.key});
@@ -15,7 +16,7 @@ class _ManagerMobileNavigationState extends State<ManagerMobileNavigation> {
     Center(child: Text("Pending Screen")),
     Center(child: Text("Transactions Screen")),
     Center(child: Text("Reports Screen")),
-    Center(child: Text("Settings Screen")),
+    Center(child: ManagerMobileSettingsScreen()),
   ];
 
   void _onItemTapped(int index) {
