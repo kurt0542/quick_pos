@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -7,13 +6,22 @@ class AddProductImage extends StatefulWidget {
   const AddProductImage({super.key});
 
   @override
-  State<AddProductImage> createState() => _AddProductImageState();
+  AddProductImageState createState() => AddProductImageState();
 }
 
-class _AddProductImageState extends State<AddProductImage> {
+class AddProductImageState extends State<AddProductImage> {
   File? _imageFile;
   final ImagePicker _picker = ImagePicker();
-  Future<void> _pickImage() async {
+
+  File? get selectedFile => _imageFile;
+
+  void clearImage() {
+    setState(() {
+      _imageFile = null;
+    });
+  }
+
+  Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
@@ -27,10 +35,10 @@ class _AddProductImageState extends State<AddProductImage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Product Image"),
+        const Text("Product Image"),
         const SizedBox(height: 8),
         GestureDetector(
-          onTap: _pickImage,
+          onTap: pickImage,
           child: Container(
             height: 150,
             width: double.infinity,

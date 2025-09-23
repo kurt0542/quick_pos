@@ -1,31 +1,42 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 
-class ProductClass {
+class ProductService {
   final String baseUrl = "http://192.168.100.21:8080";
 
   Future<Map<String, dynamic>> add({
     required String category,
     required String name,
     required double price,
-    String? imageUrl,
+    File? imageFile,
     String? allergen,
-    int? salesCount,
   }) async {
-    final url = Uri.parse('$baseUrl/products/add');
+    final uri = Uri.parse('$baseUrl/products/add');
+    final request = http.MultipartRequest('POST', uri);
 
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "category": category,
-        "name": name,
-        "price": price,
-        "imageUrl": imageUrl ?? "",
-        "allergen": allergen ?? "",
-        "salesCount": salesCount ?? 0,
-      }),
-    );
+    final productJson = jsonEncode({
+      "category": category,
+      "name": name,
+      "price": price,
+      "allergen": allergen ?? "",
+    });
+
+    request.fields['product'] = productJson;
+
+    if (imageFile != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'file',
+          imageFile.path,
+          filename: basename(imageFile.path),
+        ),
+      );
+    }
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body);
