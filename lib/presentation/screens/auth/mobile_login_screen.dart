@@ -4,6 +4,7 @@ import 'package:quick_pos/data/service/auth_service.dart';
 
 import '../../widgets/form_field.dart';
 import '../cashier/cashier_mobile_navigation.dart';
+import '../manager/manager_mobile_navigation.dart';
 
 class MobileLoginScreen extends StatefulWidget {
   const MobileLoginScreen({super.key});
@@ -28,12 +29,20 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
     String password = passwordController.text.trim();
 
     try {
-      await AuthService().login(username, password);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const CashierMobileNavigation()),
-      );
+     final result = await AuthService().login(username, password);
+      String role = result['role'];
+      if(role == 'CASHIER'){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const CashierMobileNavigation()),
+        );
+      }
+      if(role == 'MANAGER'){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const ManagerMobileNavigation()),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e")),
