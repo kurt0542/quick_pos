@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class MobileOrderTile extends StatelessWidget {
   final String name;
   final double price;
-  final int stock;
+  final int itemSold;
   final String imagePath;
 
   const MobileOrderTile({
     super.key,
     required this.name,
     required this.price,
-    required this.stock,
+    required this.itemSold,
     required this.imagePath,
   });
 
@@ -34,8 +34,8 @@ class MobileOrderTile extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(
-              imagePath,
+            child: Image.network(
+              'http://192.168.100.21:8080/uploads$imagePath',
               height: 120,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -64,10 +64,10 @@ class MobileOrderTile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      stock > 0 ? "Stock: $stock" : "Out of Stock",
+                      "products sold: $itemSold",
                       style: TextStyle(
                         fontSize: 12,
-                        color: stock > 0 ? Colors.grey : Colors.red,
+                        color: Colors.grey,
                       ),
                     ),
                   ],

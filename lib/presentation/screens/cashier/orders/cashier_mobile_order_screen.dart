@@ -4,6 +4,8 @@ import 'package:quick_pos/presentation/widgets/custom_search_bar.dart';
 import 'package:quick_pos/presentation/widgets/menu_category_chip.dart';
 import 'package:quick_pos/presentation/widgets/mobile_order_tile.dart';
 
+import '../../../../data/service/product_service.dart';
+
 class CashierMobileOrderScreen extends StatefulWidget {
   const CashierMobileOrderScreen({super.key});
 
@@ -13,28 +15,54 @@ class CashierMobileOrderScreen extends StatefulWidget {
 }
 
 class _CashierMobileOrderScreenState extends State<CashierMobileOrderScreen> {
+  final ProductService _productService = ProductService();
+  List<Map<String, dynamic>> _products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    print("CashierMobileOrderScreen initialized ✅");
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    print("Fetching products from backend...");
+    try {
+      final response = await _productService.getAllProducts();
+      print("Raw response: $response");
+
+      setState(() {
+        _products = response.cast<Map<String, dynamic>>();
+        print("Products loaded: ${_products.length} items");
+      });
+    } catch (e) {
+      print("❌ Error fetching products: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("Building UI with ${_products.length} products");
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           CustomSearchBar(paddingValue: 15),
           SizedBox(
             height: 50,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: [
+              children: const [
                 MenuCategoryChip(label: "Food"),
                 MenuCategoryChip(label: "Beverages"),
               ],
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10),
+            margin: const EdgeInsets.only(left: 10),
             child: Text(
               'Menu',
               style: GoogleFonts.roboto(
@@ -44,62 +72,30 @@ class _CashierMobileOrderScreenState extends State<CashierMobileOrderScreen> {
             ),
           ),
           Expanded(
-            child: GridView.count(
-              controller:ScrollController(initialScrollOffset: 18),
-              crossAxisCount: 2,
-              childAspectRatio: 2 / 2.2,
-              children: [
-                MobileOrderTile(
-                  name: "Caramel Coffee Jelly Frappuccino",
-                  price: 175,
-                  stock: 23,
-                  imagePath: "",
-                ),
-                MobileOrderTile(
-                  name: "Mocha Frappuccino",
-                  price: 160,
-                  stock: 15,
-                  imagePath: "",
-                ),
-                MobileOrderTile(
-                  name: "Java Chip Frappuccino",
-                  price: 180,
-                  stock: 10,
-                  imagePath: "",
-                ),
-                MobileOrderTile(
-                  name: "Strawberries & Cream Frappuccino",
-                  price: 185,
-                  stock: 8,
-                  imagePath: "",
-                ),
-                MobileOrderTile(
-                  name: "Caramel Macchiato",
-                  price: 170,
-                  stock: 12,
-                  imagePath: "",
-                ),
-                MobileOrderTile(
-                  name: "Caffè Americano",
-                  price: 140,
-                  stock: 20,
-                  imagePath: "",
-                ),
-                MobileOrderTile(
-                  name: "Chocolate Muffin",
-                  price: 95,
-                  stock: 30,
-                  imagePath: "",
-                ),
-                MobileOrderTile(
-                  name: "Classic Cheesecake",
-                  price: 215,
-                  stock: 5,
-                  imagePath: "",
-                ),
-              ],
+            child: _products.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : GridView.builder(
+              controller: ScrollController(initialScrollOffset: 18),
+              gridDelegate:
+              const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 2 / 2.2,
+              ),
+              itemCount: _products.length,
+              itemBuilder: (context, index) {
+                final product = _products[index];
+                print(
+                    "Rendering product #$index: ${product['name']} (Price: ${product['price']}, Sales: ${product['salesCount']})");
+
+                return MobileOrderTile(
+                  name: product["name"] ?? '',
+                  price: (product["price"] as num).toDouble(),
+                  itemSold: product["salesCount"] ?? 0,
+                  imagePath: product["imageUrl"] ?? '',
+                );
+              },
             ),
-          ),
+          )
         ],
       ),
     );
