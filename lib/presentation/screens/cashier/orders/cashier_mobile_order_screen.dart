@@ -21,28 +21,23 @@ class _CashierMobileOrderScreenState extends State<CashierMobileOrderScreen> {
   @override
   void initState() {
     super.initState();
-    print("CashierMobileOrderScreen initialized ✅");
     _loadProducts();
   }
 
   Future<void> _loadProducts() async {
-    print("Fetching products from backend...");
     try {
       final response = await _productService.getAllProducts();
-      print("Raw response: $response");
 
       setState(() {
         _products = response.cast<Map<String, dynamic>>();
-        print("Products loaded: ${_products.length} items");
       });
     } catch (e) {
-      print("❌ Error fetching products: $e");
+      print("Error fetching products: $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Building UI with ${_products.length} products");
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -84,9 +79,6 @@ class _CashierMobileOrderScreenState extends State<CashierMobileOrderScreen> {
               itemCount: _products.length,
               itemBuilder: (context, index) {
                 final product = _products[index];
-                print(
-                    "Rendering product #$index: ${product['name']} (Price: ${product['price']}, Sales: ${product['salesCount']})");
-
                 return MobileOrderTile(
                   name: product["name"] ?? '',
                   price: (product["price"] as num).toDouble(),

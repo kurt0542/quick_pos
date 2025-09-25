@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
@@ -12,6 +13,9 @@ class ProductService {
     required double price,
     File? imageFile,
     String? allergen,
+    bool? hasSugarOption = false,
+    bool? hasIceOption = false,
+    bool? hasCupSizeOption = false,
   }) async {
     final uri = Uri.parse('$baseUrl/products/add');
     final request = http.MultipartRequest('POST', uri);
@@ -21,6 +25,9 @@ class ProductService {
       "name": name,
       "price": price,
       "allergen": allergen ?? "",
+      "hasSugarOption": hasSugarOption,
+      "hasIceOption": hasIceOption,
+      "hasCupSizeOption": hasCupSizeOption,
     });
 
     request.fields['product'] = productJson;
@@ -55,5 +62,4 @@ class ProductService {
       throw Exception("Failed to fetch products: ${response.body}");
     }
   }
-
 }

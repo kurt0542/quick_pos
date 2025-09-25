@@ -35,7 +35,7 @@ class MobileOrderTile extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
             child: Image.network(
-              'http://192.168.100.21:8080/uploads$imagePath',
+              'http://192.168.100.21:8080$imagePath',
               height: 120,
               width: double.infinity,
               fit: BoxFit.cover,
