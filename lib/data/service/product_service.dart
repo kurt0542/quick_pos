@@ -72,4 +72,15 @@ class ProductService {
       throw Exception("Failed to fetch product: ${response.body}");
     }
   }
+
+  Future<void> deleteProduct(int id) async {
+    final uri = Uri.parse('$baseUrl/products/delete/$id');
+    final response = await http.delete(uri);
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      print("Product $id deleted successfully.");
+    } else {
+      throw Exception("Failed to delete product $id: ${response.body}");
+    }
+  }
 }

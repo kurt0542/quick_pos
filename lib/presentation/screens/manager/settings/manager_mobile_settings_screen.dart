@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quick_pos/presentation/screens/manager/addItems/mobile_add_menu_item_screen.dart';
 import 'package:quick_pos/presentation/screens/manager/settings/mobile_account_creation_dialogue.dart';
 
+import 'mobile_product_deletion.dart';
+
 class ManagerMobileSettingsScreen extends StatelessWidget {
   const ManagerMobileSettingsScreen({super.key});
 
@@ -15,7 +17,9 @@ class ManagerMobileSettingsScreen extends StatelessWidget {
         title: Text(
           "Manager Settings",
           style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600, color: Colors.grey[50]),
+            fontWeight: FontWeight.w600,
+            color: Colors.grey[50],
+          ),
         ),
         centerTitle: true,
       ),
@@ -26,7 +30,10 @@ class ManagerMobileSettingsScreen extends StatelessWidget {
               backgroundColor: Colors.blueGrey,
               child: Icon(Icons.person, color: Colors.white),
             ),
-            title: Text("Jane Manager", style: GoogleFonts.poppins(fontSize: 16)),
+            title: Text(
+              "Jane Manager",
+              style: GoogleFonts.poppins(fontSize: 16),
+            ),
             subtitle: Text("Manager", style: GoogleFonts.poppins(fontSize: 13)),
           ),
           const Divider(),
@@ -35,9 +42,7 @@ class ManagerMobileSettingsScreen extends StatelessWidget {
             leading: const Icon(Icons.lock),
             title: Text("Change Password", style: GoogleFonts.poppins()),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
           const Divider(),
 
@@ -47,10 +52,24 @@ class ManagerMobileSettingsScreen extends StatelessWidget {
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MobileAddMenuItemScreen(),
-                  ),
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MobileAddMenuItemScreen(),
+                ),
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.delete),
+            title: Text("Delete Product", style: GoogleFonts.poppins()),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MobileProductDeletion(),
+                ),
               );
             },
           ),
@@ -82,9 +101,7 @@ class ManagerMobileSettingsScreen extends StatelessWidget {
                 color: Colors.red,
               ),
             ),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
         ],
       ),
