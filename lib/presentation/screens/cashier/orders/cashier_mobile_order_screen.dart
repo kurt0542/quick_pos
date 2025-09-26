@@ -84,6 +84,7 @@ class _CashierMobileOrderScreenState extends State<CashierMobileOrderScreen> {
                   price: (product["price"] as num).toDouble(),
                   itemSold: product["salesCount"] ?? 0,
                   imagePath: product["imageUrl"] ?? '',
+                  id: product["id"],
                 );
               },
             ),

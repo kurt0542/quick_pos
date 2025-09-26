@@ -6,7 +6,6 @@ import 'package:path/path.dart';
 
 class ProductService {
   final String baseUrl = "http://192.168.100.21:8080";
-
   Future<Map<String, dynamic>> add({
     required String category,
     required String name,
@@ -60,6 +59,17 @@ class ProductService {
       return jsonDecode(response.body) as List<dynamic>;
     } else {
       throw Exception("Failed to fetch products: ${response.body}");
+    }
+  }
+
+  Future<Map<String, dynamic>> getProductById(int id) async {
+    final uri = Uri.parse('$baseUrl/products/getProductById/$id');
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    } else {
+      throw Exception("Failed to fetch product: ${response.body}");
     }
   }
 }

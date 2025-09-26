@@ -2,7 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:quick_pos/presentation/widgets/orderScreen/order_customization_selection.dart';
 
 class MobileOrderScreen extends StatefulWidget {
-  const MobileOrderScreen({super.key});
+  final String productTitle;
+  final double price;
+  final String allergen;
+  final bool cupSizeOption;
+  final bool iceOption;
+  final bool sugarOption;
+  final String imagePath;
+
+  const MobileOrderScreen({
+    super.key,
+    required this.productTitle,
+    required this.price,
+    required this.allergen,
+    required this.imagePath,
+    required this.cupSizeOption,
+    required this.iceOption,
+    required this.sugarOption,
+  });
 
   @override
   State<MobileOrderScreen> createState() => _MobileOrderScreenState();
@@ -21,15 +38,20 @@ class _MobileOrderScreenState extends State<MobileOrderScreen> {
               Container(
                 height: 275,
                 width: 410,
-                //temporary value as it needs to be adjusted for different screen sizes
                 decoration: BoxDecoration(color: Colors.blue),
-                child: Image.asset("", height: 275, fit: BoxFit.cover),
+                child: Image.network(
+                  widget.imagePath,
+                  height: 275,
+                  fit: BoxFit.cover,
+                ),
               ),
               Positioned(
                 top: 40,
                 left: 10,
                 child: InkWell(
-                  onTap: () => (),
+                  onTap: () => (
+                  Navigator.pop(context)
+                  ),
                   borderRadius: BorderRadius.circular(30),
                   child: Container(
                     padding: EdgeInsets.all(8),
@@ -57,41 +79,59 @@ class _MobileOrderScreenState extends State<MobileOrderScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Product title",
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                      widget.productTitle,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     SizedBox(height: 4),
-                    Text(
-                      "Contains: Milk, Soy",
-                      style: TextStyle(fontSize: 14, color: Colors.orange[700]),
-                    ),
+                    if (widget.allergen.isNotEmpty)
+                      Text(
+                        "Contains: ${widget.allergen}",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.orange[700],
+                        ),
+                      ),
                   ],
                 ),
-                Column(children: [Text("100"), Text('Base price')]),
+                Column(
+                  children: [
+                    Text("₱${widget.price.toStringAsFixed(2)}"),
+                    Text('Base price'),
+                  ],
+                ),
               ],
             ),
           ),
 
           SizedBox(height: 10),
           Divider(),
-          OrderCustomizationSelection(
-            title: 'Cup Size',
-            options: ["Regular", "Medium", "Large"],
-            defaultIndex: 0,
-          ),
-          SizedBox(height: 8),
-          OrderCustomizationSelection(
-            title: 'Ice Level',
-            options: ["Less Ice", "Regular", "Extra Ice"],
-            defaultIndex: 1,
-          ),
-          SizedBox(height: 8),
-          OrderCustomizationSelection(
-            title: 'Sugar Level',
-            options: ["0%", "25%", "50%", "75%", "100%"],
-            defaultIndex: 2,
-          ),
-          SizedBox(height: 8),
+          if (widget.cupSizeOption == true) ...[
+            OrderCustomizationSelection(
+              title: 'Cup Size',
+              options: ["Regular", "Medium", "Large"],
+              defaultIndex: 0,
+            ),
+            SizedBox(height: 8),
+          ],
+          if (widget.iceOption == true) ...[
+            OrderCustomizationSelection(
+              title: 'Ice Level',
+              options: ["Less Ice", "Regular", "Extra Ice"],
+              defaultIndex: 1,
+            ),
+            SizedBox(height: 8),
+          ],
+          if (widget.sugarOption == true) ...[
+            OrderCustomizationSelection(
+              title: 'Sugar Level',
+              options: ["0%", "25%", "50%", "75%", "100%"],
+              defaultIndex: 2,
+            ),
+            SizedBox(height: 8),
+          ],
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
@@ -114,9 +154,7 @@ class _MobileOrderScreenState extends State<MobileOrderScreen> {
                     ),
                     border: OutlineInputBorder(),
                     labelText: 'Enter your notes',
-                    labelStyle: TextStyle(
-                      color: Colors.black
-                    ),
+                    labelStyle: TextStyle(color: Colors.black),
                     alignLabelWithHint: true,
                   ),
                 ),
