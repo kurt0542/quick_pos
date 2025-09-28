@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 
 class ProductService {
   final String baseUrl = "http://192.168.100.21:8080";
+
   Future<Map<String, dynamic>> add({
     required String category,
     required String name,
@@ -81,6 +82,50 @@ class ProductService {
       print("Product $id deleted successfully.");
     } else {
       throw Exception("Failed to delete product $id: ${response.body}");
+    }
+  }
+
+  Future<Map<String, dynamic>> updateProduct({
+    required int id,
+    required String name,
+    required double price,
+    File? imageFile,
+    String? allergen,
+    bool? hasSugarOption = false,
+    bool? hasIceOption = false,
+    bool? hasCupSizeOption = false,
+  }) async {
+    final uri = Uri.parse('$baseUrl/products/update/$id');
+    final request = http.MultipartRequest('PUT', uri);
+
+    final productJson = jsonEncode({
+      "name": name,
+      "price": price,
+      "allergen": allergen ?? "",
+      "hasSugarOption": hasSugarOption,
+      "hasIceOption": hasIceOption,
+      "hasCupSizeOption": hasCupSizeOption,
+    });
+
+    request.fields['product'] = productJson;
+
+    if (imageFile != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'file',
+          imageFile.path,
+          filename: basename(imageFile.path),
+        ),
+      );
+    }
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception("Updating Product Failed: ${response.body}");
     }
   }
 }

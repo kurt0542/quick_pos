@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quick_pos/presentation/screens/manager/addItems/mobile_add_menu_item_screen.dart';
 import 'package:quick_pos/presentation/screens/manager/settings/mobile_account_creation_dialogue.dart';
+import 'package:quick_pos/presentation/screens/manager/settings/updateProduct/mobile_manager_update_screen.dart';
 
 import 'mobile_product_deletion.dart';
 
@@ -59,7 +60,6 @@ class ManagerMobileSettingsScreen extends StatelessWidget {
               );
             },
           ),
-          const Divider(),
           ListTile(
             leading: const Icon(Icons.delete),
             title: Text("Delete Product", style: GoogleFonts.poppins()),
@@ -69,6 +69,19 @@ class ManagerMobileSettingsScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const MobileProductDeletion(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.update),
+            title: Text("Update Product Product", style: GoogleFonts.poppins()),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MobileManagerUpdateScreen(),
                 ),
               );
             },

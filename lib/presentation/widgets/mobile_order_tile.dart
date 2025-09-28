@@ -85,12 +85,25 @@ class _MobileOrderTileState extends State<MobileOrderTile> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-              child: Image.network(
-                imageRequestPath,
-                height: 120,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+               child: Image.network(
+                  imageRequestPath,
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      height: 120,
+                      width: double.infinity,
+                      color: Colors.grey[300],
+                      child: Icon(
+                        Icons.broken_image,
+                        color: Colors.grey[600],
+                        size: 40,
+                      ),
+                    );
+                  },
+                )
+
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
